@@ -1,4 +1,7 @@
+from sqlalchemy.orm import validates
+
 from event_horizon.extensions import db
+from event_horizon.utils import Password
 
 
 class BaseModel(db.Model):
@@ -19,7 +22,7 @@ class BaseModel(db.Model):
                 pass
 
     def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}  # type: ignore
 
 
 class User(BaseModel):
@@ -27,12 +30,16 @@ class User(BaseModel):
 
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(120), nullable=False)
+    password = db.Column(Password(rounds=13), nullable=False)
 
     def __init__(self, username, email, password):
         self.username = username
         self.email = email
         self.password = password
+
+    @validates("password")
+    def _validate_password(self, key, password):
+        return getattr(type(self), key).type.validator(password)
 
     def __repr__(self):
         return f"<User {self.username}>"

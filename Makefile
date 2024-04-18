@@ -16,10 +16,6 @@ show:             ## Show the current environment.
 	@python -V
 	@python -m site
 
-.PHONY: install
-install:          ## Install the project in dev mode.
-	@pip install -e .[test]
-
 .PHONY: fmt
 fmt:              ## Format code using ruff.
 	@ruff format .
@@ -45,5 +41,12 @@ clean:            ## Clean unused files.
 
 .PHONY: initdb
 initdb:           ## Initialize the database.
-	 @python -m dotenv run -- flask initdb
+	 @flask -e .env initdb
 
+.PHONY: routes
+routes: 				 ## Show the routes.
+	 @flask -e .env routes
+
+.PHONY: run
+run: 				 		## Run the flask app
+	 @flask -e .env --debug run
