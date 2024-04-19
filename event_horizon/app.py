@@ -15,12 +15,14 @@ from event_horizon.extensions import db, migrate
 __all__ = ["create_app"]
 
 
-def create_app(env=None):
+def create_app(env=None, db_uri=None):
     if not env:
         env = os.getenv("FLASK_ENV", "development")
     app = APIFlask(__name__, instance_relative_config=True)
 
     register_config(app, env)
+    if db_uri:
+        app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     if env != "test":
         register_logger(app)
 

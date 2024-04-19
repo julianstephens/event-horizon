@@ -13,6 +13,6 @@ class UserDTO(CamelCaseSchema):
 
 
 class UserRequestDTO(CamelCaseSchema):
-    username = String(validate=Length(1, 10))
+    username = String(validate=Length(1, 20))
     email = Email()
     password = String(validate=Length(10, 24))

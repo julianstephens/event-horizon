@@ -23,7 +23,7 @@ fmt:              ## Format code using ruff.
 
 .PHONY: lint
 lint:             ## Run ruff & mypy linters.
-	@ruff check . --extend-select W
+	@ruff check . --extend-select W --fix
 
 .PHONY: clean
 clean:            ## Clean unused files.

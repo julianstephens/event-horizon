@@ -14,8 +14,8 @@ user_bp = APIBlueprint("user", __name__)
 @user_bp.input(PaginationQuery, location="query")
 @user_bp.output(UserDTO(many=True))
 async def list(query_data):
-    paginated_users = User.query.paginate(
-        page=query_data["page"], per_page=query_data["per_page"]
+    paginated_users = db.paginate(
+        db.select(User), page=query_data["page"], per_page=query_data["per_page"]
     )
 
     return {
@@ -27,7 +27,7 @@ async def list(query_data):
 @user_bp.get("/users/<int:id>")
 @user_bp.output(UserDTO)
 async def get(id):
-    user = User.query.get_or_404(id)
+    user = db.get_or_404(User, id)
     return {"data": user}
 
 
@@ -45,7 +45,7 @@ async def create(json_data):
 @user_bp.input(UserRequestDTO(partial=True))
 @user_bp.output(UserDTO)
 async def update(id, json_data):
-    user = User.query.get_or_404(id)
+    user = db.get_or_404(User, id)
     for key, value in json_data.items():
         user.__setattr__(key, value)
     db.session.commit()
@@ -55,7 +55,7 @@ async def update(id, json_data):
 @user_bp.delete("/users/<int:id>")
 @user_bp.output(EmptySchema, status_code=HTTPStatus.NO_CONTENT)
 async def delete(id):
-    user = User.query.get_or_404(id)
+    user = db.get_or_404(User, id)
     db.session.delete(user)
     db.session.commit()
     return None
