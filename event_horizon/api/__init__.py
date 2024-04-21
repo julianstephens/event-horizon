@@ -17,7 +17,13 @@ class CamelCaseSchema(Schema):
         field_obj.data_key = camelcase(field_obj.data_key or field_name)
 
 
-class PaginationQuery(Schema):
+class MetadataSchema(CamelCaseSchema):
+    id = Integer()
+    created_at = String()
+    updated_at = String()
+
+
+class PaginationQuery(CamelCaseSchema):
     page = Integer(load_default=1)
     per_page = Integer(load_default=20, validate=Range(1, 100))
 

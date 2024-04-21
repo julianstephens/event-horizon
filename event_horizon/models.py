@@ -28,12 +28,15 @@ class BaseModel(db.Model):
 class User(BaseModel):
     __tablename__ = "users"
 
-    username = db.Column(db.String(80), unique=True, nullable=False)
+    fname = db.Column(db.String(80), nullable=True)
+    lname = db.Column(db.String(80), nullable=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(Password(rounds=13), nullable=False)
+    is_admin = db.Column(db.Boolean, nullable=False, default=False)
 
-    def __init__(self, username, email, password):
-        self.username = username
+    def __init__(self, email, password, fname=None, lname=None):
+        self.fname = fname
+        self.lname = lname
         self.email = email
         self.password = password
 
@@ -42,7 +45,7 @@ class User(BaseModel):
         return getattr(type(self), key).type.validator(password)
 
     def __repr__(self):
-        return f"<User {self.username}>"
+        return f"<User {self.email}>"
 
 
 class Event(BaseModel):
@@ -69,18 +72,19 @@ class Event(BaseModel):
 class EventData(BaseModel):
     __tablename__ = "event_data"
 
-    event_id = db.Column(db.Integer, db.ForeignKey("events.id"), nullable=False)
-    event = db.relationship("Event", backref=db.backref("data", lazy=True))
+    event_id = db.Column(
+        db.Integer, db.ForeignKey("events.id", ondelete="CASCADE"), nullable=False
+    )
+    event = db.relationship(
+        "Event", backref=db.backref("data", lazy=True, passive_deletes=True)
+    )
     data = db.Column(db.JSON, nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    author = db.relationship("User", backref=db.backref("data", lazy=True))
 
-    def __init__(self, event_id, data, timestamp, author_id):
+    def __init__(self, event_id, data, timestamp):
         self.event_id = event_id
         self.data = data
         self.timestamp = timestamp
-        self.author_id = author_id
 
     def __repr__(self):
         return f"<EventData {self.id}>"
@@ -92,7 +96,7 @@ class Alert(BaseModel):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     user = db.relationship("User", backref=db.backref("alerts", lazy=True))
     event_id = db.Column(db.Integer, db.ForeignKey("events.id"), nullable=False)
-    event = db.relationship("Event", backref=db.backref("alert_data", lazy=True))
+    event = db.relationship("Event", backref=db.backref("alerts", lazy=True))
     condition = db.Column(db.JSON, nullable=False)
 
     def __init__(self, user_id, event_id, condition):

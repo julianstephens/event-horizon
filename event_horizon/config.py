@@ -19,9 +19,19 @@ class BaseConfig(object):
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    # Flask-Session
+    SESSION_TYPE = "sqlalchemy"
+    SESSION_USE_SIGNER = True
+
     # Flask-cache
     CACHE_TYPE = "simple"
     CACHE_DEFAULT_TIMEOUT = 60
+
+    INFO = {
+        "title": "Event Horizon",
+        "version": "0.1",
+        "description": "A simple event management API",
+    }
 
 
 class Development(BaseConfig):

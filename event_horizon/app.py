@@ -10,7 +10,7 @@ from flask_cors import CORS
 from event_horizon.api import ResponseSchema
 from event_horizon.commands import register_commands
 from event_horizon.config import Development, Production, Test
-from event_horizon.extensions import db, migrate
+from event_horizon.extensions import db, migrate, session
 
 __all__ = ["create_app"]
 
@@ -18,6 +18,7 @@ __all__ = ["create_app"]
 def create_app(env=None, db_uri=None):
     if not env:
         env = os.getenv("FLASK_ENV", "development")
+
     app = APIFlask(__name__, instance_relative_config=True)
 
     register_config(app, env)
@@ -77,11 +78,13 @@ def register_logger(app):
 
 def register_extensions(app):
     db.init_app(app)
+    app.config["SESSION_SQLALCHEMY"] = db
+    session.init_app(app)
     migrate.init_app(app, db)
 
 
 def register_blueprints(app):
-    for mod_name in ("user", "event"):
+    for mod_name in ("user", "event", "alert"):
         mod = il.import_module(f"{__package__}.api.{mod_name}.views", __name__)
         blueprint = getattr(mod, f"{mod_name}_bp")
         CORS(blueprint)

@@ -111,3 +111,11 @@ class Password(TypeDecorator):
             return PasswordHash.new(value, self.rounds)
         elif value is not None:
             raise TypeError("Cannot convert {} to a PasswordHash".format(type(value)))
+
+
+def generate_links(rel: str, hrefs: list[str]):
+    links = []
+    for h in hrefs:
+        links.append({"rel": rel, "href": h})
+
+    return links

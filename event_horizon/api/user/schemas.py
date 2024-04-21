@@ -1,15 +1,13 @@
-from apiflask.fields import Email, String
+from apiflask.fields import Boolean, Email, String
 from apiflask.validators import Length
 
-from event_horizon.api import CamelCaseSchema
+from event_horizon.api import CamelCaseSchema, MetadataSchema
 
 
-class UserDTO(CamelCaseSchema):
-    id = String()
+class UserDTO(MetadataSchema):
     username = String()
     email = Email()
-    created_at = String()
-    updated_at = String()
+    is_admin = Boolean()
 
 
 class UserRequestDTO(CamelCaseSchema):

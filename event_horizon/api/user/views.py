@@ -6,8 +6,9 @@ from event_horizon.api import PaginationQuery
 from event_horizon.api.user.schemas import UserDTO, UserRequestDTO
 from event_horizon.extensions import db
 from event_horizon.models import User
+from event_horizon.utils import generate_links
 
-user_bp = APIBlueprint("user", __name__)
+user_bp = APIBlueprint("users", __name__)
 
 
 @user_bp.get("/users")
@@ -28,7 +29,12 @@ async def list(query_data):
 @user_bp.output(UserDTO)
 async def get(id):
     user = db.get_or_404(User, id)
-    return {"data": user}
+    links = (
+        generate_links("events", [event.id for event in user.events])  # type: ignore
+        if len(user.events) > 0  # type: ignore
+        else None
+    )
+    return {"data": user, **({"links": links} if links else {})}
 
 
 @user_bp.post("/users")
