@@ -16,6 +16,10 @@
             "type": "string"
           }
         },
+        "required": [
+          "createdAt",
+          "id"
+        ],
         "type": "object"
       },
       "AlertRequestDTO": {
@@ -58,8 +62,16 @@
           },
           "refreshToken": {
             "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDTO"
           }
         },
+        "required": [
+          "accessToken",
+          "refreshToken",
+          "user"
+        ],
         "type": "object"
       },
       "Empty": {
@@ -92,6 +104,11 @@
             "type": "string"
           }
         },
+        "required": [
+          "createdAt",
+          "id",
+          "updatedAt"
+        ],
         "type": "object"
       },
       "EventDataDTO": {
@@ -113,6 +130,11 @@
             "type": "string"
           }
         },
+        "required": [
+          "createdAt",
+          "id",
+          "updatedAt"
+        ],
         "type": "object"
       },
       "EventDataRequestDTO": {
@@ -233,6 +255,9 @@
             "type": "string"
           }
         },
+        "required": [
+          "message"
+        ],
         "type": "object"
       },
       "Pagination": {
@@ -278,6 +303,9 @@
             "type": "string"
           }
         },
+        "required": [
+          "access_token"
+        ],
         "type": "object"
       },
       "RegisterRequestDTO": {
@@ -311,6 +339,10 @@
             "type": "string"
           }
         },
+        "required": [
+          "href",
+          "rel"
+        ],
         "type": "object"
       },
       "ReportDTO": {
@@ -331,6 +363,11 @@
             "type": "string"
           }
         },
+        "required": [
+          "createdAt",
+          "id",
+          "updatedAt"
+        ],
         "type": "object"
       },
       "ReportRequestDTO": {
@@ -375,19 +412,29 @@
             "format": "email",
             "type": "string"
           },
+          "fname": {
+            "type": "string"
+          },
           "id": {
             "type": "string"
           },
           "isAdmin": {
             "type": "boolean"
           },
-          "updatedAt": {
+          "lname": {
             "type": "string"
           },
-          "username": {
+          "updatedAt": {
             "type": "string"
           }
         },
+        "required": [
+          "createdAt",
+          "email",
+          "id",
+          "isAdmin",
+          "updatedAt"
+        ],
         "type": "object"
       },
       "UserRequestDTO": {
@@ -396,17 +443,26 @@
             "format": "email",
             "type": "string"
           },
+          "fname": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "lname": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
           "password": {
             "maxLength": 24,
             "minLength": 10,
             "type": "string"
-          },
-          "username": {
-            "maxLength": 20,
-            "minLength": 1,
-            "type": "string"
           }
         },
+        "required": [
+          "email",
+          "password"
+        ],
         "type": "object"
       },
       "UserRequestDTOUpdate": {
@@ -415,14 +471,19 @@
             "format": "email",
             "type": "string"
           },
+          "fname": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "lname": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
           "password": {
             "maxLength": 24,
             "minLength": 10,
-            "type": "string"
-          },
-          "username": {
-            "maxLength": 20,
-            "minLength": 1,
             "type": "string"
           }
         },
@@ -490,6 +551,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -546,6 +610,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -570,6 +637,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -612,6 +682,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -636,6 +709,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -680,6 +756,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -704,6 +783,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -746,6 +828,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -770,6 +855,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -821,6 +909,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -845,6 +936,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -869,6 +963,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -913,6 +1010,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -937,6 +1037,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -972,13 +1075,48 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
             },
             "description": "Successful response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Authentication error"
           }
         },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Logout",
         "tags": [
           "Auth"
@@ -1007,6 +1145,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1042,6 +1183,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1086,6 +1230,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1110,6 +1257,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1169,6 +1319,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1193,6 +1346,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1235,6 +1391,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1259,6 +1418,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1303,6 +1465,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1327,6 +1492,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1369,6 +1537,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1393,6 +1564,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1444,6 +1618,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1468,6 +1645,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1492,6 +1672,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1536,6 +1719,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1560,6 +1746,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1611,6 +1800,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1635,6 +1827,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1659,6 +1854,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1720,6 +1918,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1744,6 +1945,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1768,6 +1972,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1827,6 +2034,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1851,6 +2061,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1893,6 +2106,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1917,6 +2133,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1961,6 +2180,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -1985,6 +2207,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2027,6 +2252,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2051,6 +2279,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2102,6 +2333,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2126,6 +2360,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2150,6 +2387,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2209,6 +2449,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2233,6 +2476,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2257,6 +2503,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2304,6 +2553,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2328,6 +2580,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2352,6 +2607,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2401,6 +2659,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2425,6 +2686,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2449,6 +2713,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2496,6 +2763,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2520,6 +2790,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2544,6 +2817,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2600,6 +2876,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2624,6 +2903,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2648,6 +2930,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2672,6 +2957,9 @@
                       "$ref": "#/components/schemas/Pagination"
                     }
                   },
+                  "required": [
+                    "data"
+                  ],
                   "type": "object"
                 }
               }
@@ -2691,11 +2979,6 @@
       }
     }
   },
-  "servers": [
-    {
-      "url": "http://127.0.0.1:5000/"
-    }
-  ],
   "tags": [
     {
       "name": "Users"

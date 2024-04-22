@@ -5,10 +5,10 @@ from event_horizon.api import CamelCaseSchema, MetadataSchema
 
 
 class EventDTO(MetadataSchema):
-    name = String()
-    description = String()
-    start_date = DateTime()
-    end_date = DateTime()
+    name = String(required=True)
+    description = String(required=True)
+    start_date = DateTime(required=True)
+    end_date = DateTime(required=True)
 
 
 class EventRequestDTO(CamelCaseSchema):
@@ -20,8 +20,8 @@ class EventRequestDTO(CamelCaseSchema):
 
 
 class EventDataDTO(MetadataSchema):
-    data = Dict()
-    timestamp = DateTime()
+    data = Dict(required=True)
+    timestamp = DateTime(required=True)
 
 
 class EventDataRequestDTO(CamelCaseSchema):

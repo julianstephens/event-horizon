@@ -22,9 +22,9 @@ class CamelCaseSchema(Schema):
 
 
 class MetadataSchema(CamelCaseSchema):
-    resource_id = String(data_key="id")
-    created_at = String()
-    updated_at = String()
+    resource_id = String(required=True, data_key="id")
+    created_at = String(required=True)
+    updated_at = String(required=True)
 
 
 class PaginationQuery(CamelCaseSchema):
@@ -33,13 +33,13 @@ class PaginationQuery(CamelCaseSchema):
 
 
 class RelationSchema(CamelCaseSchema):
-    rel = String()
-    href = String()
+    rel = String(required=True)
+    href = String(required=True)
 
 
 class ResponseSchema(CamelCaseSchema):
     links = List(Nested(RelationSchema))
-    data = Field()
+    data = Field(required=True)
     pagination = Nested(PaginationSchema)
 
 

@@ -1,8 +1,9 @@
 from http import HTTPStatus
 
 from apiflask import APIBlueprint, EmptySchema, HTTPError, pagination_builder
+from flask_jwt_extended import jwt_required
 
-from event_horizon.api import PaginationQuery
+from event_horizon.api import PaginationQuery, admin_required
 from event_horizon.api.event.schemas import (
     EventDataDTO,
     EventDataRequestDTO,
@@ -17,6 +18,7 @@ event_bp = APIBlueprint("events", __name__)
 
 
 @event_bp.get("/events")
+@jwt_required()
 @event_bp.input(PaginationQuery, location="query")
 @event_bp.output(EventDTO(many=True))
 async def list(query_data):
@@ -32,6 +34,7 @@ async def list(query_data):
 
 
 @event_bp.get("/events/<string:id>")
+@jwt_required()
 @event_bp.output(EventDTO)
 async def get(id):
     event = db.session.query(Event).filter(Event.resource_id == id).first()  # type: ignore
@@ -46,6 +49,7 @@ async def get(id):
 
 
 @event_bp.post("/events")
+@jwt_required(fresh=True)
 @event_bp.input(EventRequestDTO)
 @event_bp.output(EventDTO, status_code=HTTPStatus.CREATED)
 async def create(json_data):
@@ -56,6 +60,7 @@ async def create(json_data):
 
 
 @event_bp.put("/events/<string:id>")
+@jwt_required(fresh=True)
 @event_bp.input(EventRequestDTO(partial=True))
 @event_bp.output(EventDTO)
 async def update(id, json_data):
@@ -70,6 +75,7 @@ async def update(id, json_data):
 
 
 @event_bp.delete("/events/<string:id>")
+@admin_required()
 @event_bp.output(EmptySchema, status_code=HTTPStatus.NO_CONTENT)
 async def delete(id):
     event = db.session.query(Event).filter(Event.resource_id == id).first()  # type: ignore
@@ -82,6 +88,7 @@ async def delete(id):
 
 
 @event_bp.get("/events/<string:id>/data")
+@jwt_required()
 @event_bp.output(EventDataDTO)
 async def get_data(id):
     event_data = db.session.query(EventData).filter(EventData.event_id == id).all()  # type: ignore
@@ -90,6 +97,7 @@ async def get_data(id):
 
 @event_bp.post("/events/<string:id>/data")
 @event_bp.input(EventDataRequestDTO)
+@jwt_required(fresh=True)
 @event_bp.output(EventDataDTO, status_code=HTTPStatus.CREATED)
 async def create_data(id, json_data):
     new_event = EventData(**json_data, event_id=id)
@@ -99,6 +107,7 @@ async def create_data(id, json_data):
 
 
 @event_bp.put("/events/<string:id>/data/<int:data_id>")
+@jwt_required(fresh=True)
 @event_bp.input(EventDataRequestDTO)
 @event_bp.output(EventDataDTO)
 async def update_data(id, data_id, json_data):

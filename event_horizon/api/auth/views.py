@@ -89,16 +89,19 @@ def login(json_data):
 
 
 @auth_bp.post("/refresh")
-@auth_bp.output({"access_token": String()}, schema_name="RefreshReponseDTO")
 @jwt_required(refresh=True)
+@auth_bp.output(
+    {"access_token": String(required=True)}, schema_name="RefreshReponseDTO"
+)
 def refresh():
     access_token = create_access_token(identity=current_user, fresh=False)
     return {"data": {"access_token": access_token}}
 
 
 @auth_bp.delete("/logout")
-@auth_bp.output({"message": String()}, schema_name="LogoutResponseDTO")
 @jwt_required(verify_type=False)
+@auth_bp.output({"message": String(required=True)}, schema_name="LogoutResponseDTO")
+@auth_bp.doc(security="BearerAuth")
 def logout():
     token = get_jwt()
     jti = token["jti"]
@@ -110,8 +113,8 @@ def logout():
 
 
 @auth_bp.get("/me")
-@auth_bp.output(UserDTO)
 @jwt_required()
+@auth_bp.output(UserDTO)
 def whoami():
     user = db.session.query(User).filter(User.email == current_user.email).first()  # type: ignore
     return {"data": user}

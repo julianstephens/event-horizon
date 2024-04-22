@@ -13,8 +13,7 @@ class PasswordHash(Mutable):
             if self.ph.check_needs_rehash(self.hash):
                 self.changed()
             return True
-        except Exception as ex:
-            print(ex)
+        except Exception:
             pass
 
         return False
