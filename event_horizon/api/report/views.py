@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from apiflask import APIBlueprint, EmptySchema, pagination_builder
+from apiflask import APIBlueprint, EmptySchema, HTTPError, pagination_builder
 
 from event_horizon.api import PaginationQuery
 from event_horizon.api.report.schemas import ReportDTO, ReportRequestDTO
@@ -25,10 +25,13 @@ async def list(query_data):
     }
 
 
-@report_bp.get("/reports/<int:id>")
+@report_bp.get("/reports/<string:id>")
 @report_bp.output(ReportDTO)
 async def get(id):
-    report = db.get_or_404(Report, id)
+    report = db.session.query(Report).filter(Report.resource_id == id).first()  # type: ignore
+    if report is None:
+        raise HTTPError(HTTPStatus.NOT_FOUND, "report not found")
+
     links = (
         generate_links("events", [f"/{event.id}" for event in report.events])  # type: ignore
         if len(report.events) > 0  # type: ignore
@@ -47,21 +50,27 @@ async def create(json_data):
     return {"data": new_report}
 
 
-@report_bp.patch("/reports/<int:id>")
+@report_bp.patch("/reports/<string:id>")
 @report_bp.input(ReportRequestDTO(partial=True))
 @report_bp.output(ReportDTO)
 async def update(id, json_data):
-    report = db.get_or_404(Report, id)
+    report = db.session.query(Report).filter(Report.resource_id == id).first()  # type: ignore
+    if report is None:
+        raise HTTPError(HTTPStatus.NOT_FOUND, "report not found")
+
     for key, value in json_data.items():
         report.__setattr__(key, value)
     db.session.commit()
     return {"data": report}
 
 
-@report_bp.delete("/reports/<int:id>")
+@report_bp.delete("/reports/<string:id>")
 @report_bp.output(EmptySchema, status_code=HTTPStatus.NO_CONTENT)
 async def delete(id):
-    report = db.get_or_404(Report, id)
+    report = db.session.query(Report).filter(Report.resource_id == id).first()  # type: ignore
+    if report is None:
+        raise HTTPError(HTTPStatus.NOT_FOUND, "report not found")
+
     db.session.delete(report)
     db.session.commit()
     return None

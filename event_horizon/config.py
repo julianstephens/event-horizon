@@ -3,8 +3,10 @@
 
 import logging
 import os
+from datetime import timedelta
 
 base_dir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+secret_key = os.getenv("SECRET_KEY")
 
 
 class BaseConfig(object):
@@ -13,20 +15,24 @@ class BaseConfig(object):
     DEBUG = False
     TESTING = False
 
-    SECRET_KEY = os.getenv("SECRET_KEY")
+    SECRET_KEY = secret_key
 
     # Flask-Sqlalchemy
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # Flask-Session
-    SESSION_TYPE = "sqlalchemy"
-    SESSION_USE_SIGNER = True
+    # Flask-JWT
+    JWT_SECRET_KEY = secret_key
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
+    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=1)
 
     # Flask-cache
     CACHE_TYPE = "simple"
     CACHE_DEFAULT_TIMEOUT = 60
 
+    # Flask-API
+    SYNC_LOCAL_SPEC = True
+    LOCAL_SPEC_PATH = os.path.join(base_dir, "openapi.json")
     INFO = {
         "title": "Event Horizon",
         "version": "0.1",

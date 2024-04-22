@@ -1,6 +1,10 @@
-from apiflask import PaginationSchema, Schema
+from functools import wraps
+from http import HTTPStatus
+
+from apiflask import HTTPError, PaginationSchema, Schema
 from apiflask.fields import Field, Integer, List, Nested, String
 from apiflask.validators import Range
+from flask_jwt_extended import verify_jwt_in_request
 
 
 def camelcase(s):
@@ -18,7 +22,7 @@ class CamelCaseSchema(Schema):
 
 
 class MetadataSchema(CamelCaseSchema):
-    id = Integer()
+    resource_id = String(data_key="id")
     created_at = String()
     updated_at = String()
 
@@ -37,3 +41,18 @@ class ResponseSchema(CamelCaseSchema):
     links = List(Nested(RelationSchema))
     data = Field()
     pagination = Nested(PaginationSchema)
+
+
+def admin_required():
+    def wrapper(fn):
+        @wraps(fn)
+        def decorator(*args, **kwargs):
+            (_, jwt_data) = verify_jwt_in_request(fresh=True)
+            if jwt_data["is_admin"]:
+                return fn(*args, **kwargs)
+            else:
+                raise HTTPError(HTTPStatus.FORBIDDEN, "admin required")
+
+        return decorator
+
+    return wrapper

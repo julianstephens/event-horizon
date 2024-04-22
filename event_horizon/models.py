@@ -1,13 +1,66 @@
+from sqlalchemy import Text, TypeDecorator
+from sqlalchemy import text as sa_text
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
 
 from event_horizon.extensions import db
-from event_horizon.utils import Password
+from event_horizon.utils import PasswordHash
+
+
+class Password(TypeDecorator):
+    """Allows storing and retrieving password hashes using PasswordHash."""
+
+    impl = Text
+
+    def __init__(self, **kwds):
+        super(Password, self).__init__(**kwds)
+
+    def process_bind_param(self, value, dialect):
+        """Ensure the value is a PasswordHash and then return its hash."""
+        return self._convert(value).hash
+
+    def process_result_value(self, value, dialect):
+        """Convert the hash to a PasswordHash, if it's non-NULL."""
+        if value is not None:
+            return PasswordHash(value)
+
+    def validator(self, password):
+        """Provides a validator/converter for @validates usage."""
+        if len(password) < 8 or len(password) > 24:
+            raise ValueError("Password must be between 8 and 24 characters.")
+        elif not any(char.isdigit() for char in password):
+            raise ValueError("Password must contain at least one digit.")
+        elif not any(char.islower() for char in password):
+            raise ValueError("Password must contain at least one lowercase letter.")
+        elif not any(char.isupper() for char in password):
+            raise ValueError("Password must contain at least one uppercase letter.")
+        elif not any(char in "!@#$%^&*()-+" for char in password):
+            raise ValueError("Password must contain at least one special character.")
+
+        return self._convert(password)
+
+    def _convert(self, value):
+        """Returns a PasswordHash from the given string.
+
+        PasswordHash instances or None values will return unchanged.
+        Strings will be hashed and the resulting PasswordHash returned.
+        Any other input will result in a TypeError.
+        """
+        if isinstance(value, PasswordHash):
+            return value
+        elif isinstance(value, str):
+            return PasswordHash.new(value)
+        elif value is not None:
+            raise TypeError("Cannot convert {} to a PasswordHash".format(type(value)))
 
 
 class BaseModel(db.Model):
     __abstract__ = True
 
     id = db.Column(db.Integer, primary_key=True)
+    resource_id = db.Column(
+        UUID(as_uuid=True), unique=True, server_default=sa_text("uuid_generate_v4()")
+    )
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(
         db.DateTime, server_default=db.func.now(), onupdate=db.func.now()
@@ -25,13 +78,23 @@ class BaseModel(db.Model):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}  # type: ignore
 
 
+class TokenBlocklist(BaseModel):
+    jti = db.Column(db.String(36), nullable=False, index=True)
+    type = db.Column(db.String(16), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
+
+    def __init__(self, jti, ttype) -> None:
+        self.jti = jti
+        self.type = ttype
+
+
 class User(BaseModel):
     __tablename__ = "users"
 
     fname = db.Column(db.String(80), nullable=True)
     lname = db.Column(db.String(80), nullable=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(Password(rounds=13), nullable=False)
+    password = db.Column(Password(), nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
 
     def __init__(self, email, password, fname=None, lname=None):

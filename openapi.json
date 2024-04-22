@@ -1,0 +1,2716 @@
+{
+  "components": {
+    "schemas": {
+      "AlertDTO": {
+        "properties": {
+          "condition": {
+            "type": "object"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "AlertRequestDTO": {
+        "properties": {
+          "condition": {
+            "type": "object"
+          },
+          "eventId": {
+            "type": "integer"
+          },
+          "userId": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "condition",
+          "eventId",
+          "userId"
+        ],
+        "type": "object"
+      },
+      "AlertRequestDTOUpdate": {
+        "properties": {
+          "condition": {
+            "type": "object"
+          },
+          "eventId": {
+            "type": "integer"
+          },
+          "userId": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "AuthResponseDTO": {
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Empty": {
+        "properties": {},
+        "type": "object"
+      },
+      "EventDTO": {
+        "properties": {
+          "createdAt": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "EventDataDTO": {
+        "properties": {
+          "createdAt": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
+          },
+          "id": {
+            "type": "string"
+          },
+          "timestamp": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "EventDataRequestDTO": {
+        "properties": {
+          "data": {
+            "type": "object"
+          },
+          "timestamp": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "timestamp"
+        ],
+        "type": "object"
+      },
+      "EventRequestDTO": {
+        "properties": {
+          "authorId": {
+            "type": "integer"
+          },
+          "description": {
+            "maxLength": 500,
+            "type": "string"
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 100,
+            "type": "string"
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "authorId",
+          "description",
+          "endDate",
+          "name",
+          "startDate"
+        ],
+        "type": "object"
+      },
+      "EventRequestDTOUpdate": {
+        "properties": {
+          "authorId": {
+            "type": "integer"
+          },
+          "description": {
+            "maxLength": 500,
+            "type": "string"
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 100,
+            "type": "string"
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "HTTPError": {
+        "properties": {
+          "detail": {
+            "type": "object"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Info": {
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "LoginRequestDTO": {
+        "properties": {
+          "email": {
+            "format": "email",
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object"
+      },
+      "LogoutResponseDTO": {
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Pagination": {
+        "properties": {
+          "current": {
+            "format": "url",
+            "type": "string"
+          },
+          "first": {
+            "format": "url",
+            "type": "string"
+          },
+          "last": {
+            "format": "url",
+            "type": "string"
+          },
+          "next": {
+            "format": "url",
+            "type": "string"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "pages": {
+            "type": "integer"
+          },
+          "per_page": {
+            "type": "integer"
+          },
+          "prev": {
+            "format": "url",
+            "type": "string"
+          },
+          "total": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "RefreshReponseDTO": {
+        "properties": {
+          "access_token": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "RegisterRequestDTO": {
+        "properties": {
+          "email": {
+            "format": "email",
+            "type": "string"
+          },
+          "fname": {
+            "type": "string"
+          },
+          "lname": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object"
+      },
+      "Relation": {
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "rel": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ReportDTO": {
+        "properties": {
+          "createdAt": {
+            "type": "string"
+          },
+          "filters": {
+            "type": "object"
+          },
+          "format": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ReportRequestDTO": {
+        "properties": {
+          "condition": {
+            "type": "object"
+          },
+          "eventId": {
+            "type": "integer"
+          },
+          "userId": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "condition",
+          "eventId",
+          "userId"
+        ],
+        "type": "object"
+      },
+      "ReportRequestDTOUpdate": {
+        "properties": {
+          "condition": {
+            "type": "object"
+          },
+          "eventId": {
+            "type": "integer"
+          },
+          "userId": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "UserDTO": {
+        "properties": {
+          "createdAt": {
+            "type": "string"
+          },
+          "email": {
+            "format": "email",
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "isAdmin": {
+            "type": "boolean"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UserRequestDTO": {
+        "properties": {
+          "email": {
+            "format": "email",
+            "type": "string"
+          },
+          "password": {
+            "maxLength": 24,
+            "minLength": 10,
+            "type": "string"
+          },
+          "username": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UserRequestDTOUpdate": {
+        "properties": {
+          "email": {
+            "format": "email",
+            "type": "string"
+          },
+          "password": {
+            "maxLength": 24,
+            "minLength": 10,
+            "type": "string"
+          },
+          "username": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "detail": {
+            "properties": {
+              "<location>": {
+                "properties": {
+                  "<field_name>": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "bearerFormat": "JWT",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "description": "A simple event management API",
+    "title": "Event Horizon",
+    "version": "0.1"
+  },
+  "openapi": "3.0.3",
+  "paths": {
+    "/": {
+      "get": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Info"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          }
+        },
+        "summary": "API info"
+      }
+    },
+    "/alerts": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/AlertDTO"
+                      },
+                      "type": "array"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
+          }
+        },
+        "summary": "List",
+        "tags": [
+          "Alerts"
+        ]
+      },
+      "post": {
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlertRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "HTTPStatus.CREATED": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/AlertDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          }
+        },
+        "summary": "Create",
+        "tags": [
+          "Alerts"
+        ]
+      }
+    },
+    "/alerts/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "HTTPStatus.NO_CONTENT": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Empty"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          }
+        },
+        "summary": "Delete",
+        "tags": [
+          "Alerts"
+        ]
+      },
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/AlertDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not found"
+          }
+        },
+        "summary": "Get",
+        "tags": [
+          "Alerts"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlertRequestDTOUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/AlertDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
+          }
+        },
+        "summary": "Update",
+        "tags": [
+          "Alerts"
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/AuthResponseDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
+          }
+        },
+        "summary": "Login",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/logout": {
+      "delete": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/LogoutResponseDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          }
+        },
+        "summary": "Logout",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/UserDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          }
+        },
+        "summary": "Whoami",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/RefreshReponseDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          }
+        },
+        "summary": "Refresh",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "HTTPStatus.CREATED": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/AuthResponseDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          }
+        },
+        "summary": "Register",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/events": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/EventDTO"
+                      },
+                      "type": "array"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
+          }
+        },
+        "summary": "List",
+        "tags": [
+          "Events"
+        ]
+      },
+      "post": {
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "HTTPStatus.CREATED": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/EventDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          }
+        },
+        "summary": "Create",
+        "tags": [
+          "Events"
+        ]
+      }
+    },
+    "/events/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "HTTPStatus.NO_CONTENT": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Empty"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          }
+        },
+        "summary": "Delete",
+        "tags": [
+          "Events"
+        ]
+      },
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/EventDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not found"
+          }
+        },
+        "summary": "Get",
+        "tags": [
+          "Events"
+        ]
+      },
+      "put": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventRequestDTOUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/EventDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
+          }
+        },
+        "summary": "Update",
+        "tags": [
+          "Events"
+        ]
+      }
+    },
+    "/events/{id}/data": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/EventDataDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not found"
+          }
+        },
+        "summary": "Get Data",
+        "tags": [
+          "Events"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventDataRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "HTTPStatus.CREATED": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/EventDataDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          }
+        },
+        "summary": "Create Data",
+        "tags": [
+          "Events"
+        ]
+      }
+    },
+    "/events/{id}/data/{data_id}": {
+      "put": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "data_id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventDataRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/EventDataDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
+          }
+        },
+        "summary": "Update Data",
+        "tags": [
+          "Events"
+        ]
+      }
+    },
+    "/reports": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/ReportDTO"
+                      },
+                      "type": "array"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
+          }
+        },
+        "summary": "List",
+        "tags": [
+          "Reports"
+        ]
+      },
+      "post": {
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "HTTPStatus.CREATED": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ReportDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          }
+        },
+        "summary": "Create",
+        "tags": [
+          "Reports"
+        ]
+      }
+    },
+    "/reports/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "HTTPStatus.NO_CONTENT": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Empty"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          }
+        },
+        "summary": "Delete",
+        "tags": [
+          "Reports"
+        ]
+      },
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ReportDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not found"
+          }
+        },
+        "summary": "Get",
+        "tags": [
+          "Reports"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportRequestDTOUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ReportDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
+          }
+        },
+        "summary": "Update",
+        "tags": [
+          "Reports"
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/UserDTO"
+                      },
+                      "type": "array"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Authentication error"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "List",
+        "tags": [
+          "Users"
+        ]
+      },
+      "post": {
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Authentication error"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "HTTPStatus.CREATED": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/UserDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Create",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Authentication error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "HTTPStatus.NO_CONTENT": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Empty"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Delete",
+        "tags": [
+          "Users"
+        ]
+      },
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/UserDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Authentication error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get",
+        "tags": [
+          "Users"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequestDTOUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/UserDTO"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Authentication error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/HTTPError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Update",
+        "tags": [
+          "Users"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:5000/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users"
+    },
+    {
+      "name": "Events"
+    },
+    {
+      "name": "Alerts"
+    },
+    {
+      "name": "Auth"
+    },
+    {
+      "name": "Reports"
+    }
+  ]
+}

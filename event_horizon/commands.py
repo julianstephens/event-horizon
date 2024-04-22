@@ -31,5 +31,5 @@ def register_commands(app, db):
         db.session.commit()
 
         print(
-            f"Initialized the database{'' if app.config['FLASK_ENV'] == 'production' else ' with 10 users'}."
+            f"Initialized the database{'' if app.config['FLASK_ENV'] == 'production' else ' with 10 demo users'}."
         )

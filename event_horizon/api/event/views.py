@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from apiflask import APIBlueprint, EmptySchema, pagination_builder
+from apiflask import APIBlueprint, EmptySchema, HTTPError, pagination_builder
 
 from event_horizon.api import PaginationQuery
 from event_horizon.api.event.schemas import (
@@ -31,10 +31,12 @@ async def list(query_data):
     }
 
 
-@event_bp.get("/events/<int:id>")
+@event_bp.get("/events/<string:id>")
 @event_bp.output(EventDTO)
 async def get(id):
-    event = db.get_or_404(Event, id)
+    event = db.session.query(Event).filter(Event.resource_id == id).first()  # type: ignore
+    if event is None:
+        raise HTTPError(HTTPStatus.NOT_FOUND, "event not found")
     links = (
         generate_links("alerts", [f"/alerts/{alert.id}" for alert in event.alerts])  # type: ignore
         if len(event.alerts) > 0  # type: ignore
@@ -53,34 +55,40 @@ async def create(json_data):
     return {"data": new_event}
 
 
-@event_bp.put("/events/<int:id>")
+@event_bp.put("/events/<string:id>")
 @event_bp.input(EventRequestDTO(partial=True))
 @event_bp.output(EventDTO)
 async def update(id, json_data):
-    event = db.get_or_404(Event, id)
+    event = db.session.query(Event).filter(Event.resource_id == id).first()  # type: ignore
+    if event is None:
+        raise HTTPError(HTTPStatus.NOT_FOUND, "event not found")
+
     for key, value in json_data.items():
         event.__setattr__(key, value)
     db.session.commit()
     return {"data": event}
 
 
-@event_bp.delete("/events/<int:id>")
+@event_bp.delete("/events/<string:id>")
 @event_bp.output(EmptySchema, status_code=HTTPStatus.NO_CONTENT)
 async def delete(id):
-    event = db.get_or_404(Event, id)
+    event = db.session.query(Event).filter(Event.resource_id == id).first()  # type: ignore
+    if event is None:
+        raise HTTPError(HTTPStatus.NOT_FOUND, "event not found")
+
     db.session.delete(event)
     db.session.commit()
     return None
 
 
-@event_bp.get("/events/<int:id>/data")
+@event_bp.get("/events/<string:id>/data")
 @event_bp.output(EventDataDTO)
 async def get_data(id):
     event_data = db.session.query(EventData).filter(EventData.event_id == id).all()  # type: ignore
     return {"data": event_data}
 
 
-@event_bp.post("/events/<int:id>/data")
+@event_bp.post("/events/<string:id>/data")
 @event_bp.input(EventDataRequestDTO)
 @event_bp.output(EventDataDTO, status_code=HTTPStatus.CREATED)
 async def create_data(id, json_data):
@@ -90,11 +98,13 @@ async def create_data(id, json_data):
     return {"data": new_event}
 
 
-@event_bp.put("/events/<int:id>/data/<int:data_id>")
+@event_bp.put("/events/<string:id>/data/<int:data_id>")
 @event_bp.input(EventDataRequestDTO)
 @event_bp.output(EventDataDTO)
 async def update_data(id, data_id, json_data):
-    data = db.get_or_404(EventData, data_id)
+    data = db.session.query(EventData).filter(EventData.resource_id == data_id).first()  # type: ignore
+    if data is None:
+        raise HTTPError(HTTPStatus.NOT_FOUND, "event data not found")
     for key, value in json_data.items():
         data.__setattr__(key, value)
     db.session.commit()

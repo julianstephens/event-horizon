@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from apiflask import APIBlueprint, EmptySchema, pagination_builder
+from apiflask import APIBlueprint, EmptySchema, HTTPError, pagination_builder
 
 from event_horizon.api import PaginationQuery
 from event_horizon.api.alert.schemas import AlertDTO, AlertRequestDTO
@@ -24,10 +24,12 @@ async def list(query_data):
     }
 
 
-@alert_bp.get("/alerts/<int:id>")
+@alert_bp.get("/alerts/<string:id>")
 @alert_bp.output(AlertDTO)
 async def get(id):
-    alert = db.get_or_404(Alert, id)
+    alert = db.session.query(Alert).filter(Alert.resource_id == id).first()  # type: ignore
+    if alert is None:
+        raise HTTPError(HTTPStatus.NOT_FOUND, "alert not found")
     return {"data": alert}
 
 
@@ -41,21 +43,27 @@ async def create(json_data):
     return {"data": new_alert}
 
 
-@alert_bp.patch("/alerts/<int:id>")
+@alert_bp.patch("/alerts/<string:id>")
 @alert_bp.input(AlertRequestDTO(partial=True))
 @alert_bp.output(AlertDTO)
 async def update(id, json_data):
-    alert = db.get_or_404(Alert, id)
+    alert = db.session.query(Alert).filter(Alert.resource_id == id).first()  # type: ignore
+    if alert is None:
+        raise HTTPError(HTTPStatus.NOT_FOUND, "alert not found")
+
     for key, value in json_data.items():
         alert.__setattr__(key, value)
     db.session.commit()
     return {"data": alert}
 
 
-@alert_bp.delete("/alerts/<int:id>")
+@alert_bp.delete("/alerts/<string:id>")
 @alert_bp.output(EmptySchema, status_code=HTTPStatus.NO_CONTENT)
 async def delete(id):
-    alert = db.get_or_404(Alert, id)
+    alert = db.session.query(Alert).filter(Alert.resource_id == id).first()  # type: ignore
+    if alert is None:
+        raise HTTPError(HTTPStatus.NOT_FOUND, "alert not found")
+
     db.session.delete(alert)
     db.session.commit()
     return None
