@@ -1,3 +1,4 @@
+import { DataTable } from "@/components/DataTable";
 import { deleteLogout } from "@/hooks/queries";
 import { User } from "@/lib/api/aliases";
 import { useMutation } from "@tanstack/react-query";
@@ -12,25 +13,30 @@ const DashboardPage = () => {
   const logoutMutation = useMutation({
     mutationFn: deleteLogout,
     onSuccess: () => {
-      toast.success
+      toast.success;
       signOut();
     },
     onError: (error) => {
-      console.error(error)
-    }
+      console.error(error);
+    },
   });
 
   return (
-    <div className="row">
-      <h1>Hello, {currUser?.fname ?? currUser?.email}</h1>
-      <button
-        className="btn"
-        onClick={() => {
-          logoutMutation.mutate();
-        }}
-      >
-        Logout
-      </button>
+    <div className="col">
+      <div className="row">
+        <h1>Hello, {currUser?.fname ?? currUser?.email}</h1>
+        <button
+          className="btn"
+          onClick={() => {
+            logoutMutation.mutate();
+          }}
+        >
+          Logout
+        </button>
+      </div>
+      <div className="row mt-10">
+        <DataTable />
+      </div>
     </div>
   );
 };

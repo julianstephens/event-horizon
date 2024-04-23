@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,16 +10,16 @@
     @apply w-full h-full;
   }
 
+  html {
+    @apply text-surface bg-white dark:text-neutral-50 dark:bg-body-dark;
+  }
+
   body {
-    @apply p-10 bg-gray-900 text-white;
+    @apply p-10;
   }
 
   h1 {
     @apply text-2xl font-bold;
-  }
-
-  p {
-    @apply text-gray-700;
   }
 }
 
@@ -27,8 +28,12 @@
     @apply bg-blue-500 text-white font-bold py-2 px-4 rounded;
   }
 
+  .text-accent {
+    @apply text-neutral-500 dark:text-neutral-200;
+  }
+
   .label {
-    @apply mb-1 block text-sm font-medium text-gray-200;
+    @apply mb-1 block text-sm font-medium text-accent;
   }
 
   .input {

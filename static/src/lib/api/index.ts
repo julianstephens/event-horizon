@@ -13,8 +13,29 @@ const throwOnError: Middleware = {
   },
 };
 
+const UNPROTECTED_ROUTES = ["/auth/login", "/auth/logout"];
+const authMiddleware: Middleware = {
+  async onRequest(req) {
+    if (UNPROTECTED_ROUTES.some((pathname) => req.schemaPath == pathname)) {
+      return undefined; // don’t modify request for certain paths
+    }
+    // fetch token, if it doesn’t exist
+    const token = window.getCookie("_auth");
+    if (!token) {
+      throw new Error("no auth token found");
+    }
+
+    // (optional) add logic here to refresh token when it expires
+
+    // add Authorization header to every request
+    req.headers.set("Authorization", `Bearer ${token}`);
+    return req;
+  },
+};
+
 const client = createClient<paths>({ baseUrl: "/api" });
 
 client.use(throwOnError);
+client.use(authMiddleware);
 
 export default client;
