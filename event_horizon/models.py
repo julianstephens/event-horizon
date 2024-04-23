@@ -6,6 +6,9 @@ from sqlalchemy.orm import validates
 from event_horizon.extensions import db
 from event_horizon.utils import PasswordHash
 
+# TODO: convert to mapped cols
+# https://docs.sqlalchemy.org/en/20/orm/basic_relationships.html#one-to-many
+
 
 class Password(TypeDecorator):
     """Allows storing and retrieving password hashes using PasswordHash."""
@@ -17,7 +20,10 @@ class Password(TypeDecorator):
 
     def process_bind_param(self, value, dialect):
         """Ensure the value is a PasswordHash and then return its hash."""
-        return self._convert(value).hash
+        ph = self._convert(value)
+        if ph is None:
+            return None
+        return ph.hash
 
     def process_result_value(self, value, dialect):
         """Convert the hash to a PasswordHash, if it's non-NULL."""
@@ -39,7 +45,7 @@ class Password(TypeDecorator):
 
         return self._convert(password)
 
-    def _convert(self, value):
+    def _convert(self, value) -> PasswordHash | None:
         """Returns a PasswordHash from the given string.
 
         PasswordHash instances or None values will return unchanged.
@@ -79,6 +85,8 @@ class BaseModel(db.Model):
 
 
 class TokenBlocklist(BaseModel):
+    __tablename__ = "token_blocklist"
+
     jti = db.Column(db.String(36), nullable=False, index=True)
     type = db.Column(db.String(16), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
