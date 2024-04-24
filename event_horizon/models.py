@@ -1,13 +1,20 @@
-from sqlalchemy import Text, TypeDecorator
+from typing import Annotated, Optional
+from sqlalchemy import JSON, ForeignKey, String, Text, TypeDecorator
+import datetime
 from sqlalchemy import text as sa_text
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import (
+    registry,
+    DeclarativeBase,
+    Mapped,
+    mapped_column,
+    relationship,
+    validates,
+)
+import uuid as uid
 
 from event_horizon.extensions import db
 from event_horizon.utils import PasswordHash
-
-# TODO: convert to mapped cols
-# https://docs.sqlalchemy.org/en/20/orm/basic_relationships.html#one-to-many
 
 
 class Password(TypeDecorator):
@@ -60,16 +67,37 @@ class Password(TypeDecorator):
             raise TypeError("Cannot convert {} to a PasswordHash".format(type(value)))
 
 
+str_16 = Annotated[str, 16]
+str_36 = Annotated[str, 36]
+str_80 = Annotated[str, 80]
+str_120 = Annotated[str, 120]
+str_255 = Annotated[str, 255]
+text = Annotated[str, mapped_column(Text())]
+
+
+class Base(DeclarativeBase):
+    registry = registry(
+        type_annotation_map={
+            str_16: String(16),
+            str_36: String(36),
+            str_80: String(80),
+            str_120: String(120),
+            str_255: String(255),
+            text: String().with_variant(Text, "postgresql"),
+        }
+    )
+
+
 class BaseModel(db.Model):
     __abstract__ = True
 
-    id = db.Column(db.Integer, primary_key=True)
-    resource_id = db.Column(
+    id: Mapped[int] = mapped_column(primary_key=True)
+    resource_id: Mapped[uid.UUID] = mapped_column(
         UUID(as_uuid=True), unique=True, server_default=sa_text("uuid_generate_v4()")
     )
-    created_at = db.Column(db.DateTime, server_default=db.func.now())
-    updated_at = db.Column(
-        db.DateTime, server_default=db.func.now(), onupdate=db.func.now()
+    created_at: Mapped[datetime.datetime] = mapped_column(server_default=db.func.now())
+    updated_at: Mapped[datetime.datetime] = mapped_column(
+        server_default=db.func.now(), onupdate=db.func.now()
     )
 
     def update(self, **kwargs):
@@ -87,23 +115,25 @@ class BaseModel(db.Model):
 class TokenBlocklist(BaseModel):
     __tablename__ = "token_blocklist"
 
-    jti = db.Column(db.String(36), nullable=False, index=True)
-    type = db.Column(db.String(16), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
+    jti: Mapped[str_36] = mapped_column(index=True)
+    type: Mapped[str_16] = mapped_column()
+    user_id: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"))
 
-    def __init__(self, jti, ttype) -> None:
+    def __init__(self, jti, ttype, user_id=None) -> None:
         self.jti = jti
         self.type = ttype
+        if user_id:
+            self.user_id = user_id
 
 
 class User(BaseModel):
     __tablename__ = "users"
 
-    fname = db.Column(db.String(80), nullable=True)
-    lname = db.Column(db.String(80), nullable=True)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(Password(), nullable=False)
-    is_admin = db.Column(db.Boolean, nullable=False, default=False)
+    fname: Mapped[Optional[str_80]]
+    lname: Mapped[Optional[str_80]]
+    email: Mapped[Optional[str_120]] = mapped_column(unique=True)
+    password = mapped_column(Password())
+    is_admin: Mapped[bool] = mapped_column(default=False)
 
     def __init__(self, email, password, fname=None, lname=None):
         self.fname = fname
@@ -122,12 +152,12 @@ class User(BaseModel):
 class Event(BaseModel):
     __tablename__ = "events"
 
-    name = db.Column(db.String(80), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    start_date = db.Column(db.DateTime, nullable=False)
-    end_date = db.Column(db.DateTime, nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    author = db.relationship("User", backref=db.backref("events", lazy=True))
+    name: Mapped[str_80]
+    description: Mapped[text]
+    start_date: Mapped[datetime.datetime]
+    end_date: Mapped[datetime.datetime]
+    author_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    author: Mapped["User"] = relationship(back_populates="events")
 
     def __init__(self, name, description, start_date, end_date, author_id):
         self.name = name
@@ -143,14 +173,12 @@ class Event(BaseModel):
 class EventData(BaseModel):
     __tablename__ = "event_data"
 
-    event_id = db.Column(
-        db.Integer, db.ForeignKey("events.id", ondelete="CASCADE"), nullable=False
+    event_id: Mapped[int] = mapped_column(ForeignKey("events.id", ondelete="CASCADE"))
+    event: Mapped["Event"] = relationship(
+        back_populates="event_data", cascade="all, delete-orphan", passive_deletes=True
     )
-    event = db.relationship(
-        "Event", backref=db.backref("data", lazy=True, passive_deletes=True)
-    )
-    data = db.Column(db.JSON, nullable=False)
-    timestamp = db.Column(db.DateTime, nullable=False)
+    data: Mapped[JSON] = mapped_column(type_=JSON)
+    timestamp: Mapped[datetime.datetime]
 
     def __init__(self, event_id, data, timestamp):
         self.event_id = event_id
@@ -164,11 +192,11 @@ class EventData(BaseModel):
 class Alert(BaseModel):
     __tablename__ = "alerts"
 
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    user = db.relationship("User", backref=db.backref("alerts", lazy=True))
-    event_id = db.Column(db.Integer, db.ForeignKey("events.id"), nullable=False)
-    event = db.relationship("Event", backref=db.backref("alerts", lazy=True))
-    condition = db.Column(db.JSON, nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    user: Mapped["User"] = relationship(back_populates="alerts")
+    event_id: Mapped[int] = mapped_column(ForeignKey("events.id"))
+    event: Mapped["Event"] = relationship(back_populates="alerts")
+    condition: Mapped[JSON] = mapped_column(type_=JSON)
 
     def __init__(self, user_id, event_id, condition):
         self.user_id = user_id
@@ -182,12 +210,12 @@ class Alert(BaseModel):
 class Report(BaseModel):
     __tablename__ = "reports"
 
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    user = db.relationship("User", backref=db.backref("reports", lazy=True))
-    event_id = db.Column(db.Integer, db.ForeignKey("events.id"), nullable=False)
-    event = db.relationship("Event", backref=db.backref("report_data", lazy=True))
-    filters = db.Column(db.JSON, nullable=False)
-    format = db.Column(db.String(10), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    user: Mapped["User"] = relationship(back_populates="reports")
+    event_id: Mapped[int] = mapped_column(ForeignKey("events.id"))
+    event: Mapped["Event"] = relationship(back_populates="reports")
+    filters: Mapped[JSON] = mapped_column(type_=JSON)
+    format: Mapped[str_16]
 
     def __init__(self, user_id, event_id, filters, format):
         self.user_id = user_id
@@ -202,12 +230,12 @@ class Report(BaseModel):
 class Notification(BaseModel):
     __tablename__ = "notifications"
 
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    user = db.relationship("User", backref=db.backref("notifications", lazy=True))
-    event_id = db.Column(db.Integer, db.ForeignKey("events.id"), nullable=False)
-    event = db.relationship("Event", backref=db.backref("notif_data", lazy=True))
-    message = db.Column(db.String(255), nullable=False)
-    read_status = db.Column(db.Boolean, nullable=False, default=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    user: Mapped["User"] = relationship(back_populates="notifications")
+    event_id: Mapped[int] = mapped_column(ForeignKey("events.id"))
+    event: Mapped["Event"] = relationship(back_populates="notifications")
+    message: Mapped[str_255]
+    read_status: Mapped[bool] = mapped_column(default=False)
 
     def __init__(self, user_id, event_id, message):
         self.user_id = user_id
