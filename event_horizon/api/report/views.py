@@ -33,7 +33,7 @@ async def get(id):
         raise HTTPError(HTTPStatus.NOT_FOUND, "report not found")
 
     links = (
-        generate_links("events", [f"/{event.id}" for event in report.events])  # type: ignore
+        generate_links("events", [f"/{event.resource_id}" for event in report.events])  # type: ignore
         if len(report.events) > 0  # type: ignore
         else None
     )

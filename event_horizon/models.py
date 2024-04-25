@@ -1,6 +1,8 @@
-from typing import Optional
-from sqlalchemy import JSON, ForeignKey, Text, TypeDecorator
 import datetime
+import uuid as uid
+from typing import Optional
+
+from sqlalchemy import JSON, ForeignKey, Text, TypeDecorator
 from sqlalchemy import text as sa_text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import (
@@ -9,12 +11,11 @@ from sqlalchemy.orm import (
     relationship,
     validates,
 )
-import uuid as uid
 
 from event_horizon.errors import InvalidPasswordException
 from event_horizon.extensions import db
-from event_horizon.utils import PasswordHash
 from event_horizon.types import str_16, str_36, str_80, str_120, text
+from event_horizon.utils import PasswordHash
 
 
 class Password(TypeDecorator):

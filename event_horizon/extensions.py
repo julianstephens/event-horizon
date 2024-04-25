@@ -5,7 +5,8 @@ from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from sqlalchemy import String, Text
-from sqlalchemy.orm import registry, DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase, registry
+
 from event_horizon.types import str_16, str_36, str_80, str_120, str_255, text
 
 
