@@ -5,7 +5,7 @@ from sqlalchemy.orm import configure_mappers
 
 from event_horizon.models import Alert, Event, EventData, User
 
-Faker.seed(4321)
+Faker.seed(random.randint(1000, 5000))
 fake = Faker()
 
 
@@ -58,16 +58,22 @@ def register_commands(app, db):
             user.is_admin = True
             db.session.commit()
         if app.config["FLASK_ENV"] != "production":
+            seen = set()
             for _ in range(0, 10):
                 name = fake.unique.name().split(" ")
-                print(f"creating user: {name[0]} {name[1]}")
+                if name[0] not in seen and not seen.add(name[0]):
+                    pass
+                else:
+                    name = fake.unique.name().split(" ")
 
+                pwd = fake.password(length=10, special_chars=True)
                 user = User(
                     fname=name[0],
                     lname=name[1],
                     email=f"{name[0]}@your-mail.com",
-                    password=fake.password(length=10),
+                    password=pwd,
                 )
+                print(f"creating user: {user.fname} {user.lname}")
                 db.session.add(user)
             db.session.commit()
 
