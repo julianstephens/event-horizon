@@ -5,6 +5,19 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Seed DB",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "flask",
+      "env": {
+        "FLASK_APP": "event_horizon/app.py",
+        "FLASK_DEBUG": "1"
+      },
+      "args": ["-e", ".env", "initdb"],
+      "jinja": true,
+      "autoStartBrowser": false
+    },
+    {
       "name": "React App",
       "request": "launch",
       "cwd": "${workspaceFolder}/static",
