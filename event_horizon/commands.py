@@ -38,6 +38,8 @@ def generate_random_alert(event):
             event_id=event.id,
         )
 
+    return None
+
 
 def register_commands(app, db):
     @app.cli.command("initdb")

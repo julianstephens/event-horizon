@@ -2,6 +2,7 @@ from http import HTTPStatus
 
 from apiflask import APIBlueprint, EmptySchema, HTTPError, pagination_builder
 from flask_jwt_extended import jwt_required
+from sqlalchemy.orm import noload
 
 from event_horizon.api import admin_required
 from event_horizon.api.event.schemas import (
@@ -23,13 +24,20 @@ event_bp = APIBlueprint("events", __name__)
 @event_bp.input(EventFilters, location="query")
 @event_bp.output(EventDTO(many=True))
 async def list(query_data):
+    db_query = db.select(Event).order_by(Event.created_at.desc())
+
+    # TODO: fix all noload cases
+    if "with_data" not in query_data or not query_data["with_data"]:
+        db_query = db_query.options(noload(Event.event_data))
+    if "with_alerts" not in query_data or not query_data["with_alerts"]:
+        db_query = db_query.options(noload(Event.alerts))
+
     paginated_events = db.paginate(
-        db.select(Event).order_by(Event.created_at.desc())
-        if "with_data" in query_data and not query_data["with_data"]
-        else db.select(Event).order_by(Event.created_at.desc()).join(EventData),  # type: ignore
+        db_query,
         page=query_data["page"],
         per_page=query_data["per_page"],
     )
+
     return {
         "data": paginated_events.items,
         "pagination": pagination_builder(paginated_events),  # type: ignore
@@ -55,7 +63,7 @@ async def get(id, query_data):
             detail={"id": id, **({"query": query_data} if query_data else {})},
         )
 
-    if "with_data" in query_data and query_data["with_data"]:
+    if query_data.get("with_data"):
         event_data = db.session.query(EventData).filter(EventData.event_id == id).all()
         event.event_data = event_data  # type: ignore
 
@@ -114,7 +122,7 @@ async def delete(id):
 
     db.session.delete(event)
     db.session.commit()
-    return None
+    return
 
 
 @event_bp.get("/events/<string:id>/data")

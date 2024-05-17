@@ -4,6 +4,7 @@ import pytest
 import requests
 
 from event_horizon import create_app
+from event_horizon.errors import FailedOperationError
 
 HEADERS = {
     "accept": "application/json",
@@ -13,56 +14,42 @@ HEADERS = {
 
 
 def get_test_db_connection():
-    try:
-        res = requests.post(
-            f"https://console.neon.tech/api/v2/projects/{os.getenv('NEON_PROJECT_ID')}/branches",
-            json={
-                "branch": {"name": "test", "parent_id": os.getenv("NEON_DEV_BRANCH_ID")}
-            },
-            headers=HEADERS,
-        )
-        data = res.json()
-        branch_id = data.get("branch", {}).get("id")
-        roles = data.get("roles", [])
-        databases = data.get("databases", [])
+    res = requests.post(
+        f"https://console.neon.tech/api/v2/projects/{os.getenv('NEON_PROJECT_ID')}/branches",
+        json={"branch": {"name": "test", "parent_id": os.getenv("NEON_DEV_BRANCH_ID")}},
+        headers=HEADERS,
+    )
+    data = res.json()
+    branch_id = data.get("branch", {}).get("id")
+    roles = data.get("roles", [])
+    databases = data.get("databases", [])
 
-        try:
-            compute_res = requests.post(
-                f"https://console.neon.tech/api/v2/projects/{os.getenv('NEON_PROJECT_ID')}/endpoints",
-                headers=HEADERS,
-                json={"endpoint": {"branch_id": branch_id, "type": "read_write"}},
-            )
-            endpoint_id = compute_res.json()["endpoint"]["id"]
+    compute_res = requests.post(
+        f"https://console.neon.tech/api/v2/projects/{os.getenv('NEON_PROJECT_ID')}/endpoints",
+        headers=HEADERS,
+        json={"endpoint": {"branch_id": branch_id, "type": "read_write"}},
+    )
+    endpoint_id = compute_res.json()["endpoint"]["id"]
 
-            try:
-                requests.post(
-                    f"https://console.neon.tech/api/v2/projects/{os.getenv('NEON_PROJECT_ID')}/endpoints/{endpoint_id}/start",
-                    headers=HEADERS,
-                )
+    requests.post(
+        f"https://console.neon.tech/api/v2/projects/{os.getenv('NEON_PROJECT_ID')}/endpoints/{endpoint_id}/start",
+        headers=HEADERS,
+    )
 
-                try:
-                    conn_res = requests.get(
-                        f"https://console.neon.tech/api/v2/projects/{os.getenv('NEON_PROJECT_ID')}/connection_uri",
-                        headers=HEADERS,
-                        params={
-                            "branch_id": branch_id,
-                            "database_name": databases[0]["name"],
-                            "role_name": roles[0]["name"],
-                        },
-                    )
-                    return (
-                        conn_res.json()["uri"],
-                        branch_id,
-                        endpoint_id,
-                    )
-                except Exception:
-                    raise
-            except Exception:
-                raise
-        except Exception:
-            raise
-    except Exception:
-        raise
+    conn_res = requests.get(
+        f"https://console.neon.tech/api/v2/projects/{os.getenv('NEON_PROJECT_ID')}/connection_uri",
+        headers=HEADERS,
+        params={
+            "branch_id": branch_id,
+            "database_name": databases[0]["name"],
+            "role_name": roles[0]["name"],
+        },
+    )
+    return (
+        conn_res.json()["uri"],
+        branch_id,
+        endpoint_id,
+    )
 
 
 def delete_test_branch(branch, endpoint):
@@ -76,7 +63,7 @@ def delete_test_branch(branch, endpoint):
     )
 
     if res.status_code != 200:
-        raise RuntimeError("failed to delete test branch")
+        raise FailedOperationError(message="delete test branch")
 
 
 def pytest_configure():

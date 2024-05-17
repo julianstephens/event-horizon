@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-
+import typing
 import logging
 import os
 from datetime import timedelta
@@ -33,7 +33,7 @@ class BaseConfig(object):
     # Flask-API
     SYNC_LOCAL_SPEC = True
     LOCAL_SPEC_PATH = os.path.join(base_dir, "openapi.json")
-    INFO = {
+    INFO: typing.ClassVar = {
         "title": "Event Horizon",
         "version": "0.1",
         "description": "A simple event management API",

@@ -32,7 +32,11 @@ def register(json_data):
         is not None
     )
     if user_exists:
-        raise HTTPError(HTTPStatus.ACCEPTED, "user already exists")
+        raise HTTPError(
+            HTTPStatus.ACCEPTED,
+            "user already exists",
+            detail={"email": json_data["email"]},
+        )
 
     new_user = User(**json_data)
     access_token = create_access_token(
@@ -48,6 +52,10 @@ def register(json_data):
         db.session.add(new_user)
         db.session.commit()
         session["user"] = new_user.id
+    except Exception as ex:
+        db.session.rollback()
+        raise HTTPError(HTTPStatus.UNAUTHORIZED, "failed to create user") from ex
+    else:
         return {
             "data": {
                 "user": new_user,
@@ -55,9 +63,6 @@ def register(json_data):
                 "refresh_token": refresh_token,
             }
         }
-    except Exception:
-        db.session.rollback()
-        raise HTTPError(HTTPStatus.UNAUTHORIZED, "failed to create user")
 
 
 @auth_bp.post("/login")
@@ -65,9 +70,14 @@ def register(json_data):
 @auth_bp.output(AuthResponseDTO)
 def login(json_data):
     user = db.session.query(User).filter(User.email == json_data["email"]).first()  # type: ignore
+    del user.reports
 
     if user is None:
-        raise HTTPError(HTTPStatus.BAD_REQUEST, "user not found")
+        raise HTTPError(
+            HTTPStatus.BAD_REQUEST,
+            "user not found",
+            detail={"email": json_data["email"]},
+        )
 
     if user.password != json_data["password"]:
         raise HTTPError(HTTPStatus.UNAUTHORIZED, "incorrect password")

@@ -73,4 +73,4 @@ async def delete(id):
 
     db.session.delete(report)
     db.session.commit()
-    return None
+    return

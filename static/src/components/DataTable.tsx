@@ -34,11 +34,13 @@ export const DataTable = () => {
                 </label>
               </div>
             </th>
-            {cols.map((col) => (
-              <th scope="col" className="px-6 py-3">
-                {col}
-              </th>
-            ))}
+            {cols
+              .filter((v) => v !== "eventData")
+              .map((col) => (
+                <th scope="col" className="px-6 py-3">
+                  {col}
+                </th>
+              ))}
             <th scope="col" className="px-6 py-3"></th>
           </tr>
         </thead>

@@ -1,3 +1,4 @@
+from typing import TypeVar
 from uuid import UUID
 
 from argon2 import PasswordHasher
@@ -42,9 +43,10 @@ class PasswordHash(Mutable):
             self.ph.verify(self.hash, value)
             if self.ph.check_needs_rehash(self.hash):
                 self.changed()
-            return True
         except Exception:
             pass
+        else:
+            return True
 
         return False
 
@@ -60,3 +62,10 @@ def generate_links(rel: str, hrefs: list[str]):
         links.append({"rel": rel, "href": h})
 
     return links
+
+
+T = TypeVar("T")
+
+
+def without(d: T, keys: list[str]):
+    return {k: v for k, v in d.__dict__.items() if k not in keys}

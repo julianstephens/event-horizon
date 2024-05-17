@@ -12,7 +12,7 @@ from sqlalchemy.orm import (
     validates,
 )
 
-from event_horizon.errors import InvalidPasswordException
+from event_horizon.errors import InvalidPasswordError
 from event_horizon.extensions import db
 from event_horizon.types import str_16, str_36, str_80, str_120, text
 from event_horizon.utils import PasswordHash
@@ -35,21 +35,22 @@ class Password(TypeDecorator):
 
     def process_result_value(self, value, dialect):
         """Convert the hash to a PasswordHash, if it's non-NULL."""
-        if value is not None:
-            return PasswordHash(value)
+        return PasswordHash(value) if value else None
 
     def validator(self, password: str):
         """Provides a validator/converter for @validates usage."""
         if len(password) < 8 or len(password) > 24:
-            raise InvalidPasswordException("be between 8 and 24 characters.")
-        elif not any(char.isdigit() for char in password):
-            raise InvalidPasswordException("contain at least one digit.")
-        elif not any(char.islower() for char in password):
-            raise InvalidPasswordException("contain at least one lowercase letter.")
-        elif not any(char.isupper() for char in password):
-            raise InvalidPasswordException("contain at least one uppercase letter.")
-        elif password.strip().isalnum():
-            raise InvalidPasswordException("contain at least one special character.")
+            raise InvalidPasswordError(message="be between 8 and 24 characters.")
+        if not any(char.isdigit() for char in password):
+            raise InvalidPasswordError(message="contain at least one digit.")
+        if not any(char.islower() for char in password):
+            raise InvalidPasswordError(message="contain at least one lowercase letter.")
+        if not any(char.isupper() for char in password):
+            raise InvalidPasswordError(message="contain at least one uppercase letter.")
+        if password.strip().isalnum():
+            raise InvalidPasswordError(
+                message="contain at least one special character."
+            )
 
         return self._convert(password)
 
@@ -62,10 +63,10 @@ class Password(TypeDecorator):
         """
         if isinstance(value, PasswordHash):
             return value
-        elif isinstance(value, str):
+        if isinstance(value, str):
             return PasswordHash.new(value)
-        elif value is not None:
-            raise TypeError("Cannot convert {} to a PasswordHash".format(type(value)))
+
+        raise TypeError("Cannot convert {} to a PasswordHash".format(type(value)))
 
 
 class BaseModel(db.Model):
@@ -96,7 +97,7 @@ class TokenBlocklist(BaseModel):
     __tablename__ = "token_blocklist"
 
     jti: Mapped[str_36] = mapped_column(index=True)
-    type: Mapped[str_16] = mapped_column()
+    type: Mapped[str_16]
     user_id: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"))
 
     def __init__(self, jti, ttype, user_id=None) -> None:
@@ -114,7 +115,9 @@ class User(BaseModel):
     email: Mapped[Optional[str_120]] = mapped_column(unique=True)
     password = mapped_column(Password())
     is_admin: Mapped[bool] = mapped_column(default=False)
-    reports: Mapped[list["Report"]] = relationship(back_populates="user")
+    reports: Mapped[list["Report"]] = relationship(
+        cascade="all, delete", passive_deletes=True
+    )
 
     def __init__(self, email, password, fname=None, lname=None):
         self.fname = fname
@@ -139,9 +142,11 @@ class Event(BaseModel):
     end_date: Mapped[datetime.datetime]
     author_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     event_data: Mapped[list["EventData"]] = relationship(
-        back_populates="event", passive_deletes=True
+        cascade="all, delete-orphan", passive_deletes=True
     )
-    alerts: Mapped[list["Alert"]] = relationship(back_populates="event")
+    alerts: Mapped[list["Alert"]] = relationship(
+        cascade="all, delete", passive_deletes=True
+    )
 
     def __init__(self, name, description, start_date, end_date, author_id):
         self.name = name
@@ -157,13 +162,7 @@ class Event(BaseModel):
 class EventData(BaseModel):
     __tablename__ = "event_data"
 
-    event_id: Mapped[int] = mapped_column(ForeignKey("events.id", ondelete="CASCADE"))
-    event: Mapped["Event"] = relationship(
-        back_populates="event_data",
-        single_parent=True,
-        cascade="all, delete-orphan",
-        passive_deletes=True,
-    )
+    event_id: Mapped[int] = mapped_column(ForeignKey("events.id"))
     data: Mapped[JSON] = mapped_column(type_=JSON)
     timestamp: Mapped[datetime.datetime]
 
@@ -181,7 +180,6 @@ class Alert(BaseModel):
 
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     event_id: Mapped[int] = mapped_column(ForeignKey("events.id"))
-    event: Mapped["Event"] = relationship(back_populates="alerts")
     condition: Mapped[JSON] = mapped_column(type_=JSON)
 
     def __init__(self, user_id, event_id, condition):
@@ -197,7 +195,6 @@ class Report(BaseModel):
     __tablename__ = "reports"
 
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    user: Mapped["User"] = relationship(back_populates="reports")
     filters: Mapped[JSON] = mapped_column(type_=JSON)
     format: Mapped[str_16]
 

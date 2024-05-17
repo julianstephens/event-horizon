@@ -50,8 +50,8 @@ def admin_required():
             (_, jwt_data) = verify_jwt_in_request(fresh=True)
             if jwt_data["is_admin"]:
                 return fn(*args, **kwargs)
-            else:
-                raise HTTPError(HTTPStatus.FORBIDDEN, "admin required")
+
+            raise HTTPError(HTTPStatus.FORBIDDEN, "admin required")
 
         return decorator
 

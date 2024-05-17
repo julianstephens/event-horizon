@@ -49,7 +49,7 @@ async def get(id, query_data):
             detail={"id": id, **({"query": query_data} if query_data else {})},
         )
 
-    if "with_reports" in query_data and query_data["with_reports"]:
+    if query_data.get("with_reports"):
         user.reports = db.session.query(Report).filter(Report.user_id == user.id).all()
         user.reports = user.reports  # type: ignore
 
@@ -101,4 +101,4 @@ async def delete(id):
 
     db.session.delete(user)
     db.session.commit()
-    return None
+    return

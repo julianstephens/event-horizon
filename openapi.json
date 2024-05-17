@@ -80,6 +80,12 @@
       },
       "EventDTO": {
         "properties": {
+          "alerts": {
+            "items": {
+              "$ref": "#/components/schemas/AlertDTO"
+            },
+            "type": "array"
+          },
           "createdAt": {
             "type": "string"
           },
@@ -89,6 +95,12 @@
           "endDate": {
             "format": "date-time",
             "type": "string"
+          },
+          "eventData": {
+            "items": {
+              "$ref": "#/components/schemas/EventDataDTO"
+            },
+            "type": "array"
           },
           "id": {
             "type": "string"
@@ -106,7 +118,11 @@
         },
         "required": [
           "createdAt",
+          "description",
+          "endDate",
           "id",
+          "name",
+          "startDate",
           "updatedAt"
         ],
         "type": "object"
@@ -132,7 +148,9 @@
         },
         "required": [
           "createdAt",
+          "data",
           "id",
+          "timestamp",
           "updatedAt"
         ],
         "type": "object"
@@ -423,6 +441,12 @@
           },
           "lname": {
             "type": "string"
+          },
+          "reports": {
+            "items": {
+              "$ref": "#/components/schemas/ReportDTO"
+            },
+            "type": "array"
           },
           "updatedAt": {
             "type": "string"
@@ -1295,6 +1319,22 @@
               "minimum": 1,
               "type": "integer"
             }
+          },
+          {
+            "in": "query",
+            "name": "withData",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "withAlerts",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -1516,6 +1556,42 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "withData",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "withAlerts",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -1572,6 +1648,33 @@
               }
             },
             "description": "Not found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
           }
         },
         "summary": "Get",
@@ -2425,6 +2528,14 @@
               "minimum": 1,
               "type": "integer"
             }
+          },
+          {
+            "in": "query",
+            "name": "withReports",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -2742,6 +2853,34 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "withReports",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -2825,6 +2964,33 @@
               }
             },
             "description": "Not found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ValidationError"
+                    },
+                    "links": {
+                      "items": {
+                        "$ref": "#/components/schemas/Relation"
+                      },
+                      "type": "array"
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Validation error"
           }
         },
         "security": [
@@ -2979,6 +3145,11 @@
       }
     }
   },
+  "servers": [
+    {
+      "url": "http://20da-66-108-56-23.ngrok-free.app/api/"
+    }
+  ],
   "tags": [
     {
       "name": "Users"

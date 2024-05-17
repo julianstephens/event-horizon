@@ -15,7 +15,7 @@
   }
 
   body {
-    @apply p-10;
+    @apply p-10 overflow-y-scroll;
   }
 
   h1 {

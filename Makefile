@@ -18,12 +18,12 @@ show:             ## Show the current environment.
 
 .PHONY: fmt
 fmt:              ## Format code using ruff.
-	@ruff format .
-	@ruff check . --select I --fix
+	@ruff check --fix --select I .
+	@ruff format --line-length=88 .
 
 .PHONY: lint
 lint:             ## Run ruff & mypy linters.
-	@ruff check . --extend-select W --fix
+	@ruff check --select 'W,E,F,B,N,RET,SIM,G,TRY,LOG,RUF' .
 
 .PHONY: clean
 clean:            ## Clean unused files.
@@ -49,4 +49,4 @@ routes: 				 ## Show the routes.
 
 .PHONY: run
 run: 				 		## Run the flask app
-	 @flask -e .env --debug run
+	 @flask -e .env --debug run --host=0.0.0.0 --reload
