@@ -50,3 +50,15 @@ routes: 				 ## Show the routes.
 .PHONY: run
 run: 				 		## Run the flask app
 	 @flask -e .env --debug run --host=0.0.0.0 --reload
+
+.PHONY: up
+up: 				 		## Start docker containers
+	 @docker compose up -d
+
+.PHONY: down
+down: 				 		## Destroy docker containers
+	 @docker compose down
+
+.PHONY: site
+site: 				 		## Start ngrok tunnel
+	 @ngrok http --domain=exciting-bird-resolved.ngrok-free.app 80

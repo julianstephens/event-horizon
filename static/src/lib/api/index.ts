@@ -13,7 +13,7 @@ const throwOnError: Middleware = {
   },
 };
 
-const UNPROTECTED_ROUTES = ["/auth/login", "/auth/logout"];
+const UNPROTECTED_ROUTES = ["/", "/auth/login", "/auth/logout"];
 const authMiddleware: Middleware = {
   async onRequest(req) {
     if (UNPROTECTED_ROUTES.some((pathname) => req.schemaPath == pathname)) {

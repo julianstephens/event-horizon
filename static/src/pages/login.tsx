@@ -1,5 +1,5 @@
 import { Loader } from "@/components/Loader";
-import { postLogin } from "@/hooks/queries";
+import { checkhealth, postLogin } from "@/hooks/queries";
 import type { User } from "@/lib/api/aliases";
 import { components } from "@/lib/api/api";
 import { useMutation } from "@tanstack/react-query";
@@ -14,6 +14,8 @@ const LoginPage = () => {
   const [pwd, setPwd] = useState("********");
 
   const goto = useNavigate();
+
+  const { data, error, isLoading: checkLoading } = checkhealth();
 
   const signIn = useSignIn<User>();
   const isAuthed = useIsAuthenticated();
@@ -51,6 +53,11 @@ const LoginPage = () => {
     loginMutation.mutate(loginReq);
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    if (!checkLoading && error) console.error(error);
+    if (!checkLoading && data) console.log(data.data);
+  }, [checkLoading]);
 
   useEffect(() => {
     if (isAuthed) goto("/dashboard");

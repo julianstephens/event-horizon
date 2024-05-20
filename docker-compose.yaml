@@ -1,0 +1,42 @@
+services:
+  server:
+    build: .
+    container_name: server
+    command: poetry run gunicorn --bind 0.0.0.0:5000 wsgi:app
+    volumes:
+      - .:/var/www/server
+      - /var/www/server/.venv
+    expose:
+      - 5000
+    ports:
+      - 5000:5000
+    env_file:
+      - .env
+  client:
+    build: ./static
+    container_name: client
+    command: pnpm dev
+    volumes:
+      - ./static:/usr/app
+      - /usr/app/node_modules
+    expose:
+      - 5173
+    ports:
+      - 5173:5173
+    depends_on:
+      - server
+    env_file:
+      - .env
+  proxy:
+    image: "jc21/nginx-proxy-manager:latest"
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "81:81"
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+
+networks:
+  webnet:
+    external: true
